@@ -195,7 +195,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: fintech_hw:User.java:unknown" level="project" />
-    <orderEntry type="library" name="Maven: resources:org.:unknown" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-datablind:2.9.4" level="project" />
   </component>
 </module>
