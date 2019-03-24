@@ -30,9 +30,6 @@ import java.util.*;
 import static org.apache.http.HttpHeaders.USER_AGENT;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Helper {
-
-
-
     public void writeToExcel(ArrayList<User> UserMas, int count, String[] Header)throws Exception{
         Workbook Excel = new HSSFWorkbook();
         Sheet Sheet = Excel.createSheet("MyWork");

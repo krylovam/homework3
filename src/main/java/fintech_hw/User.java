@@ -179,7 +179,8 @@ public class User {
     }
 
     public int randBetween(int start, int end) {
-        return start + (int)Math.round(Math.random() * (double)(end - start));
+        Random random = new Random();
+        return start + random.nextInt(end - start);
     }
 
     public void setAge(GregorianCalendar dob) {
@@ -225,6 +226,61 @@ public class User {
         Random rand = new Random();
         long postcode = 100000 + rand.nextInt(100000);
         this.postcode = String.valueOf(postcode);
+    }
+    public User generateUser(String dir, int constCount)throws Exception{
+        User User = new User();
+        User.setState(fintech_hw.User.getAddress(String.format("%s%S", dir, "Country.txt"), constCount));
+        User.setCity(fintech_hw.User.getAddress(String.format("%s%s", dir, "City.txt"), constCount));
+        User.setStreet(fintech_hw.User.getAddress(String.format("%s%s", dir, "Street.txt"), constCount));
+        User.setPostcode();
+        User.setHouse();
+        User.setFlat();
+        User.setINN();
+        User.setDayOfBirth();
+        User.setAge(User.getDob());
+        return User;
+    }
+    public ArrayList<User> generateUsers(int constCount, int count)throws Exception{
+        Random rand = new Random();
+        ArrayList<User> UserMas = new ArrayList<>(count);
+        int countMen = rand.nextInt(count + 1);
+        int countWomen = count - countMen;
+        Helper helper = new Helper();
+        String dir = String.format("%s%s%s%s%s%s%s%s",System.getProperty("user.dir"),File.separator, "src", File.separator, "main", File.separator, "resources", File.separator);
+        ArrayList<Integer> NumbersFIOMen = new ArrayList(helper.getNumbers(countMen, constCount));
+        ArrayList<Integer> NumbersFIOWomen = new ArrayList(helper.getNumbers(countWomen, constCount));
+        ArrayList<Integer> NumbersAddress = new ArrayList(helper.getNumbers(count, constCount));
+        ArrayList<String> SurnameMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "SurnameMen.txt")));
+        ArrayList<String> NameMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "NameMen.txt")));
+        ArrayList<String> PatronymicMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "PatronymicMen.txt")));
+        ArrayList<String> SurnameWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "SurnameWomen.txt")));
+        ArrayList<String> NameWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "NameWomen.txt")));
+        ArrayList<String> PatronymicWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "PatronymicWomen.txt")));
+        for (int i = 0; i < count; i++) {
+            User user = new User();
+            user = user.generateUser(dir, constCount);
+            UserMas.add(user);
+        }
+        for (int i = 0; i < countMen; i++) {
+            UserMas.get(i).setLastName(SurnameMen.get(i));
+            UserMas.get(i).setFirstName(NameMen.get(i));
+            try {
+                UserMas.get(i).setTitle(PatronymicMen.get(i));
+            } catch (IndexOutOfBoundsException e) {
+            }
+            UserMas.get(i).setGender("M");
+        }
+        for (int i = 0; i < countWomen; i++) {
+            UserMas.get(i + countMen).setLastName(SurnameWomen.get(i));
+            UserMas.get(i + countMen).setFirstName(NameWomen.get(i));
+            try {
+                UserMas.get(i + countMen).setTitle(PatronymicWomen.get(i));
+            } catch (IndexOutOfBoundsException e) {
+            }
+            UserMas.get(i + countMen).setGender("Ж");
+        }
+        Collections.shuffle(UserMas);
+        return UserMas;
     }
 
 }

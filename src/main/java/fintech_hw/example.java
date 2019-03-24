@@ -65,51 +65,10 @@ public class example {
         HttpResponse response = helper.getResponse();
         String[] Header = new String[13];
         if (response == null) {
+            System.out.println("No conection");
             final int constCount = 30;
-            int countMen = rand.nextInt(count + 1);
-            int countWomen = count - countMen;
-
-            String dir = String.format("%s%s%s%s%s%s%s%s",System.getProperty("user.dir"),File.separator, "src", File.separator, "main", File.separator, "resources", File.separator);
-            ArrayList<Integer> NumbersFIOMen = new ArrayList(helper.getNumbers(countMen, constCount));
-            ArrayList<Integer> NumbersFIOWomen = new ArrayList(helper.getNumbers(countWomen, constCount));
-            ArrayList<Integer> NumbersAddress = new ArrayList(helper.getNumbers(count, constCount));
-            ArrayList<String> SurnameMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "SurnameMen.txt")));
-            ArrayList<String> NameMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "NameMen.txt")));
-            ArrayList<String> PatronymicMen = new ArrayList<String>(helper.getLineByLine(NumbersFIOMen, String.format("%s%s", dir, "PatronymicMen.txt")));
-            ArrayList<String> SurnameWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "SurnameWomen.txt")));
-            ArrayList<String> NameWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "NameWomen.txt")));
-            ArrayList<String> PatronymicWomen = new ArrayList<String>(helper.getLineByLine(NumbersFIOWomen, String.format("%s%s", dir, "PatronymicWomen.txt")));
-            for (int i = 0; i < count; i++) {
-                UserMas.add(new fintech_hw.User());
-                UserMas.get(i).setState(fintech_hw.User.getAddress(String.format("%s%S", dir, "Country.txt"), constCount));
-                UserMas.get(i).setCity(fintech_hw.User.getAddress(String.format("%s%s", dir, "City.txt"), constCount));
-                UserMas.get(i).setStreet(fintech_hw.User.getAddress(String.format("%s%s", dir, "Street.txt"), constCount));
-                UserMas.get(i).setPostcode();
-                UserMas.get(i).setHouse();
-                UserMas.get(i).setFlat();
-                UserMas.get(i).setINN();
-                UserMas.get(i).setDayOfBirth();
-                UserMas.get(i).setAge(UserMas.get(i).getDob());
-            }
-            for (int i = 0; i < countMen; i++) {
-                UserMas.get(i).setLastName(SurnameMen.get(i));
-                UserMas.get(i).setFirstName(NameMen.get(i));
-                try {
-                    UserMas.get(i).setTitle(PatronymicMen.get(i));
-                } catch (IndexOutOfBoundsException e) {
-                }
-                UserMas.get(i).setGender("M");
-            }
-            for (int i = 0; i < countWomen; i++) {
-                UserMas.get(i + countMen).setLastName(SurnameWomen.get(i));
-                UserMas.get(i + countMen).setFirstName(NameWomen.get(i));
-                try {
-                    UserMas.get(i + countMen).setTitle(PatronymicWomen.get(i));
-                } catch (IndexOutOfBoundsException e) {
-                }
-                UserMas.get(i + countMen).setGender("Ж");
-            }
-            Collections.shuffle(UserMas);
+            User user = new User();
+            UserMas = user.generateUsers(constCount,count);
             Header = new String[]{"Фамилия", "Имя", "Отчество", "Возраст", "Пол", "Дата рождения", "ИНН", "Индекс", "Страна", "Город", "Улица", "Дом", "Квартира"};
         } else {
             for (int i = 0; i < count; i++) {
